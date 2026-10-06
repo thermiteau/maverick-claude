@@ -9,9 +9,6 @@ tagged, so the default branch always holds the latest release. Don't edit files
 or open pull requests here. File issues and changes in
 [thermiteau/maverick](https://github.com/thermiteau/maverick/issues).
 
-> No release has been published to this repository yet. Until one is, keep
-> installing from the existing marketplace as below.
-
 ## Install
 
 In a Claude Code session:
@@ -21,5 +18,5 @@ In a Claude Code session:
 /plugin install maverick@thermite
 ```
 
-The plugin installs the matching `maverick` CLI (PyPI: `maverick-harness`) at
-session start.
+At session start the plugin installs the `maverick` CLI release that matches
+its version (PyPI: `maverick-harness`).
