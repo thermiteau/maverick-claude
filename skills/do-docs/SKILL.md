@@ -166,6 +166,14 @@ Accept a diff or changed file list. Determine which existing documents are affec
 - Update only the sections affected by the changes
 - Create new documents only for entirely new components or subsystems that have no existing coverage
 - Do not rewrite unrelated sections
+- **Owned docs are report-only.** Some docs belong to someone else (a
+  product owner's specs, accepted ADRs) and are configured under
+  `docs.owners` in `.maverick/config.json`. The caller passes them as
+  "owned docs"; you can also check a path with
+  `uv run maverick docs owners <path>`. Never edit an owned doc unless
+  its entry says `editable: true`. Instead, return it as drift: the
+  path, the section, and what the change made stale. The caller routes
+  that to the owner.
 
 ### 3. Update Index
 
@@ -182,4 +190,4 @@ Run the do-tech-docs validation checklist against every document changed or crea
 - In **update** mode, scope narrowly to the diff — do not refactor surrounding documentation
 - Verify every factual claim against the source code before writing it
 
-<!-- maverick-plugin-version: 5.1.1 -->
+<!-- maverick-plugin-version: 5.2.0 -->
