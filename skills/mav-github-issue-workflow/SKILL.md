@@ -62,12 +62,22 @@ the API response (never scraped from output that may carry warnings) and
 records it in the task-progress marker automatically:
 
 ```bash
-# Post (body from a file, or '-' for stdin)
-uv run maverick issue comment post <repo> <issue> --kind design --body-file /tmp/design.md
+# Post — body on stdin ('-')
+uv run maverick issue comment post <repo> <issue> --kind design --body-file - <<'EOF'
+<design markdown>
+EOF
 
 # Revise later — updates the same comment, keeping one artefact per kind
-uv run maverick issue comment update <repo> <issue> --kind design --body-file /tmp/design-v2.md
+uv run maverick issue comment update <repo> <issue> --kind design --body-file - <<'EOF'
+<revised design markdown>
+EOF
 ```
+
+Pass bodies on stdin rather than through a file. Never use a fixed
+`/tmp` path such as `/tmp/design.md`: concurrent stories on the same
+machine share `/tmp`, so one story's body can be posted to another
+story's issue — a cross-issue disclosure, not just noise (#159). If a
+file is unavoidable, create a unique one with `mktemp`.
 
 ### Identity
 
@@ -170,4 +180,4 @@ inspects CI and the review verdict, and returns `{next, instruction,
 evidence}`. Follow the instruction. If the evidence contradicts what you
 observe locally, GitHub wins — local files are a cache.
 
-<!-- maverick-plugin-version: 5.2.2 -->
+<!-- maverick-plugin-version: 5.2.3 -->

@@ -44,8 +44,14 @@ You will be given:
    comment and records `comments.tasks` in the task-progress marker):
 
    ```bash
-   uv run maverick issue comment post $REPO $ISSUE_NUMBER --kind tasks --body-file /tmp/tasks.md
+   uv run maverick issue comment post $REPO $ISSUE_NUMBER --kind tasks --body-file - <<'EOF'
+   <task checklist markdown>
+   EOF
    ```
+
+   Pass the body on stdin (`--body-file -`), never through a fixed
+   `/tmp` path — parallel stories share `/tmp`, so one story's file can be
+   posted to another story's issue (#159).
 
    **If >= 5 tasks:** Create sub-issues linked to the parent issue per the mav-create-tasks skill, then post the summary comment listing all sub-issues with execution order via the same `issue comment post --kind tasks` command.
 
@@ -87,4 +93,4 @@ checklist | sub-issues
 - **Scope boundaries** — follow the mav-scope-boundaries skill. Flag any tasks that touch infrastructure, auth, or destructive operations.
 - **Durable output** — always post the tasks comment and update the state file before returning, so work is not lost if the caller's session crashes.
 
-<!-- maverick-plugin-version: 5.2.2 -->
+<!-- maverick-plugin-version: 5.2.3 -->
