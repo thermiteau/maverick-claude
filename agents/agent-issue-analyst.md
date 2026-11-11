@@ -42,14 +42,20 @@ You will be given:
 7. **Post the design** durably (writes the comment, returns its id, and records `comments.design` in the task-progress marker in one step):
 
    ```bash
-   uv run maverick issue comment post <repo> $ISSUE_NUMBER --kind design --body-file - <<'EOF'
-   <design markdown>
-   EOF
+   uv run maverick issue comment post <repo> $ISSUE_NUMBER --kind design --body-file .maverick/tmp/design-$ISSUE_NUMBER.md
    ```
 
-   Pass the body on stdin (`--body-file -`), never through a fixed
-   `/tmp` path — parallel stories share `/tmp`, so one story's file can be
-   posted to another story's issue (#159).
+   Write the body with the **Write tool** (not a heredoc: worktree-isolated
+   agents have long heredocs refused as too complex to verify) to
+   `.maverick/tmp/design-$ISSUE_NUMBER.md` inside the story's own
+   checkout, then post that file. Name the file after the issue, and never
+   use a shared location such as `/tmp` or the session scratchpad: every
+   concurrent story sees those, and a stale `design.md` from another story
+   has been posted to the wrong issue (#159). If the write fails, stop and
+   report it; never post a file you did not just write. Start the body
+   with a heading that names the issue (`## Solution design: <title> (#$ISSUE_NUMBER)`); the CLI refuses a
+   body whose heading names a different issue, and deletes
+   `.maverick/tmp/` body files once they are posted.
 
 8. **Checkpoint** — `uv run maverick task-progress set <repo> $ISSUE_NUMBER design`.
 
@@ -86,4 +92,4 @@ Return a structured message containing:
 - **Right-sized design** — scale design depth to the task per the mav-create-solution-design skill's sizing table.
 - **Durable output** — always post the design comment and update the state file before returning, so work is not lost if the caller's session crashes.
 
-<!-- maverick-plugin-version: 5.2.3 -->
+<!-- maverick-plugin-version: 5.2.4 -->

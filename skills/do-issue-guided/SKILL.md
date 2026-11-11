@@ -210,7 +210,9 @@ their commits landed unreviewed.
 
 1. Post a completion comment: `uv run maverick issue comment post <repo> $ARGUMENTS --kind completion --body-file <file>`.
 2. Create a pull request per the mav-github-issue-workflow skill (PR pattern — the body must carry `Closes #$ARGUMENTS`).
-3. **Checkpoint**: `uv run maverick task-progress set <repo> $ARGUMENTS complete`.
+3. **Checkpoint**: `uv run maverick task-progress set <repo> $ARGUMENTS completed`
+   (recorded as the `complete` phase; worktree-isolated agents have the
+   bare word refused, #160).
 
 **🔲 Checkpoint — Done:** Present the PR URL to the user and summarise what was delivered.
 
@@ -223,4 +225,4 @@ their commits landed unreviewed.
 - **Use conventional commits** that reference the issue number (e.g., `feat: add rubric export (#42)`).
 - **Always create a PR** at the end — deliver a complete result.
 
-<!-- maverick-plugin-version: 5.2.3 -->
+<!-- maverick-plugin-version: 5.2.4 -->

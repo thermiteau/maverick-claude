@@ -281,7 +281,9 @@ When every story in the wave is terminal (merged or ejected):
      issues opened in steps 2–3 (or "none").
 5. Update `maverick-state` one last time.
 6. Release the epic-level claim:
-   `uv run maverick coord release <repo> $ARGUMENTS --reason complete`.
+   `uv run maverick coord release <repo> $ARGUMENTS` (the default
+   reason; don't pass the bare word as an argument — worktree-isolated
+   agents have it refused, #160).
 7. The `heartbeat-loop` background processes self-terminate within one
    `--interval` window once their claims are released — `wait` for them
    if you backgrounded them with PIDs, or just let the parent shell exit.
@@ -330,4 +332,4 @@ state.
 - **Never auto-close an epic with ejected stories.** Those belong to the
   human.
 
-<!-- maverick-plugin-version: 5.2.3 -->
+<!-- maverick-plugin-version: 5.2.4 -->
