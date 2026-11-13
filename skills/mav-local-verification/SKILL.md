@@ -103,6 +103,24 @@ Run in this order — each stage catches different classes of issues:
 
 Stop at the first failure. Fix it before proceeding to the next stage.
 
+### Reading the output
+
+Agents pay for every line they read, again on every later call. Send
+each command's output to a log and read back only what decides the next
+step: the exit status, the summary lines and the failures.
+
+```bash
+mkdir -p .maverick/tmp
+LOG=.maverick/tmp/verify-<issue>-<stage>.log
+<command> > "$LOG" 2>&1; echo "exit=$?"
+tail -n 30 "$LOG"
+grep -nE 'FAIL|Error|error:' "$LOG" | head -n 40
+```
+
+Widen the read only around a failure you are diagnosing. Keep the log in
+the checkout's `.maverick/tmp/`, never a shared `/tmp` path, so parallel
+stories never read each other's.
+
 ## Scope-Appropriate Verification
 
 Not every change needs the full suite:
@@ -139,4 +157,4 @@ Otherwise, run the full suite again. Say which way you went, and why,
 in the push's report note. Before marking a PR ready, the CI checks on
 the pushed head still have to pass, whatever was skipped locally.
 
-<!-- maverick-plugin-version: 5.3.0 -->
+<!-- maverick-plugin-version: 5.3.1 -->
